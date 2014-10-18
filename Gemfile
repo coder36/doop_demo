@@ -35,7 +35,7 @@ gem 'spring',        group: :development
 
 # Use debugger
 # gem 'debugger', group: [:development, :test]
-gem 'doop', :path => "../doop"
+gem 'doop', :git => "git://github.com/coder36/doop.git"
 
 gem "govuk_frontend_toolkit"
 gem "govuk_template"
