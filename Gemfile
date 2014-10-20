@@ -36,7 +36,6 @@ gem 'spring',        group: :development
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 #gem 'doop', :git => "git://github.com/coder36/doop.git"
-gem 'doop', :path => "../doop"
 
 gem "govuk_frontend_toolkit"
 gem "govuk_template"
@@ -44,8 +43,10 @@ gem "govuk_template"
 group :production do
   gem 'rails_12factor'
   gem 'pg'
+  gem 'doop', :git => "git://github.com/coder36/doop.git"
 end
 
 group :development do
   gem 'sqlite3'
+#  gem 'doop', :path => "../doop"
 end
