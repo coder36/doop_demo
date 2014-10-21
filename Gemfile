@@ -43,10 +43,16 @@ gem "govuk_template"
 group :production do
   gem 'rails_12factor'
   gem 'pg'
-#  gem 'doop', :git => "git://github.com/coder36/doop.git"
 end
 
 group :development do
   gem 'sqlite3'
+end
+
+if File.exists?( "heroku")
+  gem 'doop', :git => "git://github.com/coder36/doop.git"
+elsif File.exists?( "../doop" )
   gem 'doop', :path => "../doop"
+else
+  gem 'doop'
 end

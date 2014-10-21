@@ -1,5 +1,6 @@
-PATH
-  remote: ../doop
+GIT
+  remote: git://github.com/coder36/doop.git
+  revision: 09741ea080d1f9447f4debbe3e7d6d945ae5e2cf
   specs:
     doop (0.0.1)
       rails
