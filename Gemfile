@@ -47,6 +47,13 @@ end
 
 group :development do
   gem 'sqlite3'
+  gem 'rspec-rails'
+  gem 'guard-rspec'
+  gem 'capybara'
+  gem 'pry'
+  gem 'pry-nav'
+  gem 'capybara-webkit'
+  gem 'headless'
 end
 
 if File.exists?( "heroku")
