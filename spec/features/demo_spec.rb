@@ -81,7 +81,7 @@ def change_question q_title, &block
     expect( question q_title ).to be_asked
     yield block
   rescue Exception
-    page.save_screenshot( 'tmp/screenshot.png')
+    save_data
     raise
   end
 end
@@ -91,9 +91,8 @@ def answer_question q_title, &block
     @q_title = q_title
     expect( question q_title ).to be_asked
     yield block
-  rescue Exception
-    save_page Rails.root.join( 'public', 'capybara.html' )
-    page.save_screenshot( 'tmp/screenshot.png')
+  rescue Exception => e
+    save_data
     raise
   end
 end
@@ -108,4 +107,12 @@ end
 
 def change_answer_tooltip_text
   page.find( '.change_answer_tooltip' ).text
+end
+
+def save_data
+  page.save_screenshot( 'public/capybara_screenshot.png')
+  data = page.find_by_id('doop_data', :visible => false ).value
+  visit "/demo/harness"
+  page.find_by_id( 'fred', :visible => false ).set( data )
+  save_page Rails.root.join( 'public', 'capybara.html' )
 end

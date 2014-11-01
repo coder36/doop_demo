@@ -16,3 +16,4 @@
 /tmp
 *.swp
 /public/capybara.html
+/public/capybara_screenshot.png
