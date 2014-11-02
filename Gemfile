@@ -54,6 +54,7 @@ group :development do
   gem 'pry-nav'
   gem 'capybara-webkit'
   gem 'headless'
+  gem 'capybara-screenshot'
 end
 
 if File.exists?( "heroku")

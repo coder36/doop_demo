@@ -1,7 +1,7 @@
 <%=form_tag( {action: "answer"}, :authenticity_token => true, :remote => true ) do %>
   <div class="question_form">
     <%=render "doop/navbar", :res => res, :doop => doop %> 
-    <h1><%=res[:page_title]%></h1>
+    <h1 id="page_title"><%=res[:page_title]%></h1>
     <% content.call %>
   </div>
 

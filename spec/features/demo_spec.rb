@@ -1,33 +1,33 @@
 require 'rails_helper'
 require 'pry'
 
-class Question
-  attr_accessor :text
-end
+feature "Doop questionnaire" do
 
-def question text
-  q = Question.new
-  q.text = text
-  q
-end
+  scenario "Quick run through", :js => true do
+    visit '/'
+    wait_for_page( "Apply Online" )
+    answer_question( "Turn debug on") { click_button "Yes" }
+    answer_question( "Have you enrolled for this service before")  { click_button "Yes" }
+    answer_question( "What year did you last apply")  { select( '2012', :from => 'b_answer' ); click_button "Continue"  }
+    answer_question( "Why are you applying")  { fill_in( 'b_answer', :with => "My circumstances have changed" ); click_button "Continue"}
+    click_button "Continue and Save"
 
-RSpec::Matchers.define :be_asked do 
-  match do |question|
-    page.has_css?( '.question-open h2', :text => question.text )
+    wait_for_page( "Your Details" )
+    answer_question( "What is your name") { b_fill_in( "firstname" => "Mark", "surname" => "Middleton" ); click_button "Continue" }
+    address = { "address1" => "1 Runswick Avenue", "address2" => "Telford", "address3" => "Shropshire", "postcode" => "T56 HDJ" }
+    answer_question( "Address 1") { b_fill_in( address); click_button "Continue" }
+    click_button "Continue"
+    click_button "Continue and Save"
+
+    wait_for_page( "Summary" )
+    answer_question( "Terms and conditions") { click_button "I have read" }
+
   end
 
-  failure_message do |question|
-    actual = page.all( '.question-open h2', ).last.text
-    "Expected question to be asked: #{question.text}, but was asked #{actual}"
-  end
 
-end
-
-
-
-feature "Self assessment questionaire" do
   scenario "ask a question", :js => true do
     visit '/'
+    wait_for_page( "Apply Online" )
 
     answer_question( "Turn debug on") do 
       click_button "Yes" 
@@ -71,48 +71,4 @@ feature "Self assessment questionaire" do
 
     click_button "Continue and Save"
   end
-end
-
-
-def change_question q_title, &block
-  begin
-    @q_title = q_title
-    page.find( '.question-closed div.title', :text => q_title ).find(:xpath, "..").find( 'div.answer a' ).click
-    expect( question q_title ).to be_asked
-    yield block
-  rescue Exception
-    save_data
-    raise
-  end
-end
-
-def answer_question q_title, &block
-  begin
-    @q_title = q_title
-    expect( question q_title ).to be_asked
-    yield block
-  rescue Exception => e
-    save_data
-    raise
-  end
-end
-
-def rollup_text
-  page.find( '.question-closed div.title', :text => @q_title ).find(:xpath, '..').find( 'div.answer').text
-end
-
-def tooltip_text
-  page.find( '.tooltip' ).text
-end
-
-def change_answer_tooltip_text
-  page.find( '.change_answer_tooltip' ).text
-end
-
-def save_data
-  page.save_screenshot( 'public/capybara_screenshot.png')
-  data = page.find_by_id('doop_data', :visible => false ).value
-  visit "/demo/harness"
-  page.find_by_id( 'fred', :visible => false ).set( data )
-  save_page Rails.root.join( 'public', 'capybara.html' )
 end

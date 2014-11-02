@@ -4,36 +4,3 @@
   <br/>
   <button id="render" >Render</button>
 <% end %>
-
-
-<input type="hidden" id="fred"/>
-
-<div id="rspec_results">
-
-  <h3><p>Copy and paste into <a href="/demo/harness">Test harness</a> then hit the <strong>render</strong> button</p></h3>
-  <br/>
-  <br/>
-
-  <h1>Screenshot at point of failure</h1>
-
-  <img src="/capybara_screenshot.png"/>
-
-</div>
-
-<script>
-$( document ).ready( function() {
-  data = $("#fred").val()
-
-  if ( data != "") {
-    $('#render').css( "display", "none" )
-    $('#rspec_results').css( "display", "block" )
-  }
-
-  if ( data == "" ) {
-    $('#rspec_results').css( "display", "none" )
-  }
-
-  $("#doop_data").val( data )
-  })
-
-</script>
