@@ -44,7 +44,7 @@ feature "Doop questionnaire" do
       return
     end
 
-    visit '/'
+    visit '/demo/index'
     wait_for_page( "Apply Online" )
     answer_question( "Turn debug on") { click_button "Yes" }
     answer_question( "Have you enrolled for this service before")  { click_button "Yes" }
