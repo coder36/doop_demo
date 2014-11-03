@@ -10,7 +10,6 @@ feature "Doop questionnaire" do
 
   scenario "Changing an answer, causes change_answer_tool_tip_text to appear", :js => true do
     load_completed_form
-    save_screenshot( "/vagrant/screenshot.png" )
     change_page( "Apply Online" )
     change_question( "Have you enrolled for this service before") do 
       expect(change_answer_tooltip_text).to match /additional questions may be asked/
