@@ -10,7 +10,7 @@ require 'headless'
 require 'capybara-screenshot/rspec'
 
 
-Capybara.javascript_driver = :webkit
+Capybara.current_driver = :webkit
 
 # Add additional requires below this line. Rails is not loaded until this point!
 
@@ -80,6 +80,18 @@ RSpec::Matchers.define :be_asked do
 
 end
 
+RSpec::Matchers.define :be_enabled do 
+  match do |q_title|
+    page.has_css?( '.question_title', :text => q_title )
+  end
+end
+
+RSpec::Matchers.define :be_disabled do 
+  match do |q_title|
+    page.has_no_css?( '.question_title', :text => q_title )
+  end
+end
+
 def question text
   text
 end
@@ -122,4 +134,9 @@ def b_fill_in options = {}
   options.keys.each do |key|
     page.fill_in( "b_#{key}", :with => options[key] )
   end
+end
+
+def change_page page_name
+  page.find_link( page_name ).click
+  wait_for_page page_name
 end
