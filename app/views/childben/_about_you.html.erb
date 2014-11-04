@@ -1,0 +1,56 @@
+<%=question_form doop, res do %>
+  <%=question "/page/about_you" do |root, answer| %>
+
+    <%=question "/page/about_you/your_name" do |root,answer| %>
+      <div class="textfield">
+        <label for="title">Title (eg. Mrs, Miss, Ms, Mr or Dr)</label>
+        <input id="title" name="b_title" type="text" value="<%=answer["title"]%>"/>
+      </div>
+
+      <div class="textfield">
+        <label for="firstname">Your fistname</label>
+        <input id="firstname" name="b_firstname" type="text" value="<%=answer["firstname"]%>"/>
+      </div>
+
+      <div class="textfield">
+        <label for="middlenames">Middlename(s)</label>
+        <input id="middlenames" name="b_middlenames" type="text" value="<%=answer["middlenames"]%>"/>
+      </div>
+
+      <div class="textfield">
+        <label for="surname">Your surname or family name</label>
+        <input id="surname" name="b_surname" type="text" value="<%=answer["surname"]%>"/>
+      <br/>
+      <button>Continue</button><br/>
+    <% end %>
+
+    <%=question "/page/about_you/known_by_other_name" do |root,answer| %>
+      <p>This includes your maiden name.</p>
+      <button name="b_answer" value="Yes">Yes</button><br/>
+      <button name="b_answer" value="No">No</button>
+    <% end %>
+
+    <%=question "/page/about_you/previous_name" do |root,answer| %>
+      <div class="textfield">
+        <label for="previousname">Include your maiden name</label>
+        <input id="previousname" name="b_answer" type="text" value="<%=answer%>"/>
+      </div>
+      <button>Continue</button>
+    <% end %>
+
+    <%=question "/page/about_you/dob" do |root,answer| %>
+      <div class="textfield">
+        <label for="dob">DD/MM/YYYY</label>
+        <%=error res, :dob_error %>
+        <input id="dob" name="b_answer" type="text" value="<%=answer%>"/>
+      </div>
+      <button>Continue</button>
+    <% end %>
+
+
+    <% when_answered "/page/about_you" do %>
+      <button>Continue and Save</button>
+    <% end %>
+  <% end %>
+
+<% end %>
