@@ -72,25 +72,30 @@ end
 
 RSpec::Matchers.define :be_asked do 
   match do |q_title|
-    page.has_css?( '.question-open h2', :text => q_title )
+    page.find_by_id( "#{q_title}-open" )
   end
 
   failure_message do |q_title|
-    actual = page.all( '.question-open h2', ).last.text
-    "Expected question to be asked: #{q_title}, but was asked #{actual}"
+    "Expected question with id #{q_title} to be asked"
   end
 
 end
 
 RSpec::Matchers.define :be_enabled do 
   match do |q_title|
-    page.has_css?( '.question_title', :text => q_title )
+    page.find_by_id( q_title )
   end
 end
 
 RSpec::Matchers.define :be_disabled do 
   match do |q_title|
-    page.has_no_css?( '.question_title', :text => q_title )
+    expect(page).to have_no_selector( "##{q_title}" )
+  end
+end
+
+RSpec::Matchers.define :be_visible do 
+  match do |id|
+    page.find_by_id( id )
   end
 end
 
@@ -100,7 +105,7 @@ end
 
 def change_question q_title, &block
   @q_title = q_title
-  page.find( '.question-closed div.title', :text => q_title ).find(:xpath, "..").find( 'div.answer a' ).click
+  page.find_by_id( "#{q_title}-change" ).click
   expect( question q_title ).to be_asked
   yield block
 end
@@ -109,11 +114,11 @@ def answer_question q_title, &block
   @q_title = q_title
   expect( question q_title ).to be_asked
   yield block
-  page.find( '.question-closed div.title', :text => q_title )
+  page.find_by_id( "#{q_title}-closed" )
 end
 
 def rollup_text
-  page.find( '.question-closed div.title', :text => @q_title ).find(:xpath, '..').find( 'div.answer').text
+  page.find_by_id( "#{@q_title}-change" ).text
 end
 
 def tooltip_text
@@ -124,8 +129,16 @@ def change_answer_tooltip_text
   page.find( '.change_answer_tooltip' ).text
 end
 
+def change_answer_tooltip_for q_id
+  "#{q_id}-change-answer-tooltip"
+end
+
+def change_answer_tooltip
+  "#{@q_title}-change-answer-tooltip"
+end
+
 def wait_for_page p_title
-  page.find_by_id( "page_title", :text=>p_title)
+  page.find_by_id( "#{p_title}-page" )
 end
 
 def page_title
@@ -139,6 +152,6 @@ def b_fill_in options = {}
 end
 
 def change_page page_name
-  page.find_link( page_name ).click
+  page.find_by_id( "#{page_name}-nav" ).click
   wait_for_page page_name
 end

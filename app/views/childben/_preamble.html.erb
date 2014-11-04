@@ -14,8 +14,8 @@
       <h3>Your information</h3>
     <p>By applying for child benefit online, you consent that we may process your personal data (including sensitive personal data) that we collect from you.</p>
 
-    <% when_question :changed => "/page/preamble/income_more_than_50000" do |current_answer| %>
-      <%=change_answer_tooltip do %>
+    <% when_question :changed => "/page/preamble/income_more_than_50000" do |current_answer, id| %>
+      <%=change_answer_tooltip id do %>
         <p>If you change this answer, additional questions may be asked</p>
       <% end %>
 
