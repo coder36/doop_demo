@@ -50,6 +50,27 @@ class ChildbenController < ApplicationController
               },
               dob: {
                 _question: "Your date of birth"
+              },
+              your_address: {
+                _question: "Your address",
+                _answer: {}
+              },
+              lived_at_address_for_more_than_12_months: {
+                _question: "Have you lived at this address for more than 12 months ?"
+              },
+              last_address: {
+                _question: "What was your last address ?",
+                _answer: {}
+              },
+              your_phone_numbers: {
+                _question: "What numbers can we contact you on ?",
+                _answer: {}
+              },
+              have_nino: {
+                _question: "Do you have a national insurance number ?"
+              },
+              nino: {
+                _question: "Tell us your national insurance number"
               }
 
             }
@@ -99,9 +120,37 @@ class ChildbenController < ApplicationController
         next { :dob_error => "Date of birth must be formated as DD/MM/YYYY" } if d.nil?
         answer_with( question, { "_summary" => d } )
       end
+
+      on_answer "/page/about_you/your_address"  do |question,path, params, answer|
+        a = "#{answer['address1']}, #{answer['postcode']}"
+        answer_with( question, { "_summary" => a } )
+      end
+
+      on_answer "/page/about_you/lived_at_address_for_more_than_12_months" do |question, path, params, answer|
+        answer_with( question, { "_summary" => answer } )
+        enable( "/page/about_you/last_address", answer == 'No' )
+      end
+
+      on_answer "/page/about_you/last_address"  do |question,path, params, answer|
+        a = "#{answer['address1']}, #{answer['postcode']}"
+        answer_with( question, { "_summary" => a } )
+      end
+
+      on_answer "/page/about_you/your_phone_numbers"  do |question,path, params, answer|
+        answer_with( question, { "_summary" => "Provided" } )
+      end
+
+      on_answer "/page/about_you/have_nino" do |question, path, params, answer|
+        answer_with( question, { "_summary" => answer } )
+        enable( "/page/about_you/nino", answer == 'Yes' )
+      end
+
+      on_answer "/page/about_you/nino" do |question, path, params, answer|
+        answer_with( question, { "_summary" => answer } )
+      end
+
     end
   end
-
 
 end
 

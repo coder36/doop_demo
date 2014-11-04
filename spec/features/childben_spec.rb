@@ -49,5 +49,40 @@ feature "Child Benefit online form" do
       click_button "Continue"
       expect( rollup_text ).to eq( "25 February 1977" )
     end
+
+    answer_question( "your_address" ) do
+      b_fill_in( "address1" => "1 Runswick Avenue", "address2" => "Woolston", "address3" => "Leeds", "postcode" => "LE31 4WP" )
+      click_button "Continue"
+      expect( rollup_text ).to eq( "1 Runswick Avenue, LE31 4WP" )
+    end
+
+    answer_question( "lived_at_address_for_more_than_12_months" ) { click_button "Yes" }
+    expect( question "last_address" ).to be_disabled
+    change_question( "lived_at_address_for_more_than_12_months" ) { click_button "No" }
+    expect( question "last_address" ).to be_enabled
+
+    answer_question( "last_address" ) do
+      b_fill_in( "address1" => "5 Runswick Avenue", "address2" => "Woolston", "address3" => "Leeds", "postcode" => "LE31 4WP" )
+      click_button "Continue"
+      expect( rollup_text ).to eq( "5 Runswick Avenue, LE31 4WP" )
+    end
+
+    answer_question( "your_phone_numbers" ) do
+      b_fill_in( "daytime" => "01235 6789117", "evening" => "01235 678117" )
+      click_button "Continue"
+      expect( rollup_text ).to eq( "Provided" )
+    end
+
+    answer_question( "have_nino" ) { click_button "No" }
+    expect( question "nino" ).to be_disabled
+
+    change_question( "have_nino" ) { click_button "Yes" }
+    expect( question "nino" ).to be_enabled
+
+    answer_question( "nino" ) do
+      b_fill_in( "answer" => "00 12 34 56 A" )
+      click_button "Continue"
+      expect( rollup_text ).to eq( "00 12 34 56 A" )
+    end
   end
 end

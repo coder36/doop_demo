@@ -47,6 +47,78 @@
       <button>Continue</button>
     <% end %>
 
+    <%=question "/page/about_you/your_address" do |root,answer| %>
+
+      <div class="textfield">
+        <label for="address1">Address</label>
+        <input id="address1" type="text" name="b_address1" value="<%=answer['address1']%>"/>
+      </div>
+      <div class="textfield">
+        <input id="address2" type="text" name="b_address2" value="<%=answer['address2']%>"/>
+      </div>
+
+      <div class="textfield">
+        <input id="address3" type="text" name="b_address3" value="<%=answer['address3']%>"/>
+      </div>
+      <div class="textfield">
+        <label for="postcode">Postcode</label>
+        <input id="postcode" type="text" name="b_postcode" value="<%=answer['postcode']%>"/>
+      </div>
+      <button>Continue</button>
+
+    <% end %>
+
+    <%=question "/page/about_you/lived_at_address_for_more_than_12_months" do |root,answer| %>
+      <button name="b_answer" value="Yes">Yes</button><br/>
+      <button name="b_answer" value="No">No</button>
+    <% end %>
+
+    <%=question "/page/about_you/last_address" do |root,answer| %>
+
+      <div class="textfield">
+        <label for="address1">Address</label>
+        <input id="address1" type="text" name="b_address1" value="<%=answer['address1']%>"/>
+      </div>
+      <div class="textfield">
+        <input id="address2" type="text" name="b_address2" value="<%=answer['address2']%>"/>
+      </div>
+
+      <div class="textfield">
+        <input id="address3" type="text" name="b_address3" value="<%=answer['address3']%>"/>
+      </div>
+      <div class="textfield">
+        <label for="postcode">Postcode</label>
+        <input id="postcode" type="text" name="b_postcode" value="<%=answer['postcode']%>"/>
+      </div>
+      <button>Continue</button>
+
+    <% end %>
+
+    <%=question "/page/about_you/your_phone_numbers" do |root,answer| %>
+
+      <div class="textfield">
+        <label for="daytime">Daytime phone number</label>
+        <input id="daytime" type="text" name="b_daytime" value="<%=answer['daytime']%>"/>
+      </div>
+      <div class="textfield">
+        <label for="evening">Evening phone number</label>
+        <input id="evening" type="text" name="b_evening" value="<%=answer['evening']%>"/>
+      </div>
+      <button>Continue</button>
+    <% end %>
+
+    <%=question "/page/about_you/have_nino" do |root,answer| %>
+      <button name="b_answer" value="Yes">Yes</button><br/>
+      <button name="b_answer" value="No">No</button>
+    <% end %>
+
+    <%=question "/page/about_you/nino" do |root,answer| %>
+      <div class="textfield">
+        <label for="answer">Example of a National Insurance number is 00 12 34 56 A</label>
+        <input id="answer" type="text" name="b_answer" value="<%=answer%>"/>
+      </div>
+      <button>Continue</button>
+    <% end %>
 
     <% when_answered "/page/about_you" do %>
       <button>Continue and Save</button>
