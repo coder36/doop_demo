@@ -1,0 +1,51 @@
+<%=question_form doop, res do %>
+  <%=question "/page/about_your_partner" do |root, answer| %>
+
+    <%=question "/page/about_your_partner/name" do |root,answer| %>
+      <div class="textfield">
+        <input id="fullname" name="b_answer" type="text" value="<%=answer%>"/>
+      </div>
+      <button>Continue</button>
+    <% end %>
+
+    <%=question "/page/about_your_partner/dob" do |root,answer| %>
+      <div class="textfield">
+        <label for="dob">DD/MM/YYYY</label>
+        <%=error res, :dob_error %>
+        <input id="dob" name="b_answer" type="text" value="<%=answer%>"/>
+      </div>
+      <button>Continue</button>
+    <% end %>
+
+    <%=question "/page/about_your_partner/nino" do |root,answer| %>
+      <div class="textfield">
+        <label for="answer">Example of a National Insurance number is 00 12 34 56 A</label>
+        <input id="answer" type="text" name="b_answer" value="<%=answer%>"/>
+      </div>
+      <button>Continue</button>
+    <% end %>
+
+    <%=question "/page/about_your_partner/nationality" do |root,answer| %>
+      <div class="textfield">
+        <label for="answer">This is on their passport</label>
+        <input id="answer" name="b_answer" type="text" value="<%=answer%>"/>
+      </div>
+      <button>Continue</button>
+    <% end %>
+
+    <%=question "/page/about_your_partner/employment_status" do |root,answer| %>
+      <%= select_tag "b_answer", options_for_select( ["Looking for work in the UK", "Employed in the UK", "Self employed in the UK", "None of these - they have enough money to support their family in the UK"], answer ) %><br/>
+      <button>Continue</button>
+    <% end %>
+
+    <%=question "/page/about_your_partner/member_of_hmforces_civilservant" do |root,answer| %>
+      <button name="b_answer" value="Yes">Yes</button><br/>
+      <button name="b_answer" value="No">No</button>
+    <% end %>
+
+    <% when_answered "/page/about_your_partner" do %>
+      <button>Continue and Save</button>
+    <% end %>
+  <% end %>
+
+<% end %>

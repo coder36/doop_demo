@@ -2,94 +2,51 @@
   <%=question "/page/about_you" do |root, answer| %>
 
     <%=question "/page/about_you/your_name" do |root,answer| %>
-      <div class="textfield">
-        <label for="title">Title (eg. Mrs, Miss, Ms, Mr or Dr)</label>
-        <input id="title" name="b_title" type="text" value="<%=answer["title"]%>"/>
-      </div>
-
-      <div class="textfield">
-        <label for="firstname">Your fistname</label>
-        <input id="firstname" name="b_firstname" type="text" value="<%=answer["firstname"]%>"/>
-      </div>
-
-      <div class="textfield">
-        <label for="middlenames">Middlename(s)</label>
-        <input id="middlenames" name="b_middlenames" type="text" value="<%=answer["middlenames"]%>"/>
-      </div>
-
-      <div class="textfield">
-        <label for="surname">Your surname or family name</label>
-        <input id="surname" name="b_surname" type="text" value="<%=answer["surname"]%>"/>
+      <%=doop_textfield "title", answer, res, :label => "Title (eg. Mrs, Miss, Ms, Mr or Dr)" %>
+      <%=doop_textfield "firstname", answer, res, :label => "Firstname" %>
+      <%=doop_textfield "middlenames", answer, res, :label => "Middlename(s)" %>
+      <%=doop_textfield "surname", answer, res, :label => "Surname of family name" %>
       <br/>
       <button>Continue</button><br/>
     <% end %>
 
     <%=question "/page/about_you/known_by_other_name" do |root,answer| %>
-      <p>This includes your maiden name.</p>
-      <button name="b_answer" value="Yes">Yes</button><br/>
-      <button name="b_answer" value="No">No</button>
+      <p>If you had a different maiden name, please answer Yes.</p>
+      <button name="b_answer" value="Yes">Yes, I have been known by another surname</button><br/>
+      <button name="b_answer" value="No">No, I have not been known by another surname</button>
     <% end %>
 
     <%=question "/page/about_you/previous_name" do |root,answer| %>
-      <div class="textfield">
-        <label for="previousname">Include your maiden name</label>
-        <input id="previousname" name="b_answer" type="text" value="<%=answer%>"/>
-      </div>
+      <%=doop_textfield "answer", answer, res %>
       <button>Continue</button>
     <% end %>
 
     <%=question "/page/about_you/dob" do |root,answer| %>
-      <div class="textfield">
-        <label for="dob">DD/MM/YYYY</label>
-        <%=error res, :dob_error %>
-        <input id="dob" name="b_answer" type="text" value="<%=answer%>"/>
-      </div>
+      <p>Please provide this in the format dd/mm/yyyy eg. 25/02/1977</p>
+      <%=doop_textfield "answer", answer, res %>
       <button>Continue</button>
     <% end %>
 
     <%=question "/page/about_you/your_address" do |root,answer| %>
 
-      <div class="textfield">
-        <label for="address1">Address</label>
-        <input id="address1" type="text" name="b_address1" value="<%=answer['address1']%>"/>
-      </div>
-      <div class="textfield">
-        <input id="address2" type="text" name="b_address2" value="<%=answer['address2']%>"/>
-      </div>
-
-      <div class="textfield">
-        <input id="address3" type="text" name="b_address3" value="<%=answer['address3']%>"/>
-      </div>
-      <div class="textfield">
-        <label for="postcode">Postcode</label>
-        <input id="postcode" type="text" name="b_postcode" value="<%=answer['postcode']%>"/>
-      </div>
+      <%=doop_textfield "address1", answer, res, :label => "Address" %>
+      <%=doop_textfield "address2", answer, res %>
+      <%=doop_textfield "address3", answer, res %>
+      <%=doop_textfield "postcode", answer, res, :label => "Postcode" %>
       <button>Continue</button>
 
     <% end %>
 
     <%=question "/page/about_you/lived_at_address_for_more_than_12_months" do |root,answer| %>
-      <button name="b_answer" value="Yes">Yes</button><br/>
-      <button name="b_answer" value="No">No</button>
+      <button name="b_answer" value="Yes">Yes, I've lived at this address for more than 12 months</button><br/>
+      <button name="b_answer" value="No">No, I have not lived at this address for more than 12 months</button>
     <% end %>
 
     <%=question "/page/about_you/last_address" do |root,answer| %>
-
-      <div class="textfield">
-        <label for="address1">Address</label>
-        <input id="address1" type="text" name="b_address1" value="<%=answer['address1']%>"/>
-      </div>
-      <div class="textfield">
-        <input id="address2" type="text" name="b_address2" value="<%=answer['address2']%>"/>
-      </div>
-
-      <div class="textfield">
-        <input id="address3" type="text" name="b_address3" value="<%=answer['address3']%>"/>
-      </div>
-      <div class="textfield">
-        <label for="postcode">Postcode</label>
-        <input id="postcode" type="text" name="b_postcode" value="<%=answer['postcode']%>"/>
-      </div>
+      <%=doop_textfield "address1", answer, res, :label => "Address" %>
+      <%=doop_textfield "address2", answer, res %>
+      <%=doop_textfield "address3", answer, res %>
+      <%=doop_textfield "postcode", answer, res, :label => "Postcode" %>
       <button>Continue</button>
 
     <% end %>
@@ -97,26 +54,25 @@
     <%=question "/page/about_you/your_phone_numbers" do |root,answer| %>
 
       <div class="textfield">
-        <label for="daytime">Daytime phone number</label>
-        <input id="daytime" type="text" name="b_daytime" value="<%=answer['daytime']%>"/>
-      </div>
-      <div class="textfield">
-        <label for="evening">Evening phone number</label>
-        <input id="evening" type="text" name="b_evening" value="<%=answer['evening']%>"/>
-      </div>
+      <%=doop_textfield "daytime", answer, res, :label => "Daytime phone number" %>
+      <%=doop_textfield "evening", answer, res, :label => "Evening phone number" %>
       <button>Continue</button>
     <% end %>
 
     <%=question "/page/about_you/have_nino" do |root,answer| %>
-      <button name="b_answer" value="Yes">Yes</button><br/>
-      <button name="b_answer" value="No">No</button>
+      <%=info_box do %>
+        <p>This will be on:</p>
+        <li>a P60 certificate from your employer</li>
+        <li>a PAYE Coding Notice or a letter from us</li>
+        <li>a payslip from your employer</li>
+        <li>any letter from the Department for Work and Pensions or Jobcentre Plus</li>
+      <% end %>
+      <button name="b_answer" value="Yes">Yes, I have a national insurance number</button><br/>
+      <button name="b_answer" value="No">No, I don't have a national insurance number</button>
     <% end %>
 
     <%=question "/page/about_you/nino" do |root,answer| %>
-      <div class="textfield">
-        <label for="answer">Example of a National Insurance number is 00 12 34 56 A</label>
-        <input id="answer" type="text" name="b_answer" value="<%=answer%>"/>
-      </div>
+      <%=doop_textfield "answer", answer, res, :label => "Example of a National Insurance number is 00123456A" %>
       <button>Continue</button>
     <% end %>
 

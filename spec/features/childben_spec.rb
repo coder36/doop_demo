@@ -7,6 +7,9 @@ feature "Child Benefit online form" do
   scenario "Complete Child Benefit form", :js => true do
     before_you_begin
     about_you
+    about_your_partner
+    children
+    declaration
   end
 
   def before_you_begin
@@ -30,7 +33,6 @@ feature "Child Benefit online form" do
 
 
   def about_you
-    before_you_begin
     wait_for_page( "about_you" )
     answer_question( "your_name") do
       b_fill_in( "title" => "Mr", "surname" => "Middleton", "firstname" => "Mark", "middlenames" => "Alan")
@@ -84,5 +86,61 @@ feature "Child Benefit online form" do
       click_button "Continue"
       expect( rollup_text ).to eq( "00 12 34 56 A" )
     end
+
+    click_button "Continue"
+  end
+
+  def about_your_partner
+    wait_for_page( "about_your_partner" )
+    answer_question( "name" ) { b_fill_in( "answer" => "Ann-Marie Middleton" ); click_button "Continue" }
+    answer_question( "dob" ) { b_fill_in( "answer" => "30/09/1974" ); click_button "Continue" }
+    answer_question( "nino" ) { b_fill_in( "answer" => "00 11 22 33 44 A" ); click_button "Continue" }
+    answer_question( "nationality" ) { b_fill_in( "answer" => "British" ); click_button "Continue" }
+    answer_question( "employment_status" ) { click_button "Continue" }
+    answer_question( "member_of_hmforces_civilservant" ) { click_button "No" }
+    click_button "Continue"
+  end
+
+  def children
+    wait_for_page( "children" )
+
+    answer_question( "how_many_birth_certs" ) do
+      b_fill_in( "answer" => "1" ); click_button "Continue" 
+    end
+
+    # child__1
+    answer_question( "name" ) do 
+      b_fill_in( "firstname" => "Padraig", "middlenames" => "Alan", "surname" => "Middleton" ); click_button "Continue" 
+      expect( rollup_text ).to eq ( "Padraig Alan Middleton" )
+    end
+    answer_question( "gender" ) { click_button "Male" }
+    answer_question( "dob" ) { b_fill_in( "answer" => "30/09/2006" ); click_button "Continue" }
+    answer_question( "own_child" ) { click_button "Yes" }
+    answer_question( "child__1" ) { click_button "Continue" }
+
+    # child__2
+    click_button "Add another child"
+    answer_question( "name" ) do 
+      b_fill_in( "firstname" => "Annie", "middlenames" => "", "surname" => "Middleton" ); click_button "Continue" 
+      expect( rollup_text ).to eq ( "Annie Middleton" )
+    end
+    answer_question( "gender" ) { click_button "Female" }
+    answer_question( "dob" ) { b_fill_in( "answer" => "24/02/2008" ); click_button "Continue" }
+    answer_question( "own_child" ) { click_button "Yes" }
+    answer_question( "child__2" ) { click_button "Continue" }
+
+    # remove child__2
+    change_question( "child__2" ) {
+      click_button "Remove child"
+    }
+
+    expect( question "child__2" ).to be_disabled
+    click_button "Continue"
+
+  end
+
+
+  def declaration
+    wait_for_page( "declaration" )
   end
 end

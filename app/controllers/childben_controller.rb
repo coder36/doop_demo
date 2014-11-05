@@ -70,14 +70,68 @@ class ChildbenController < ApplicationController
                 _question: "Do you have a national insurance number ?"
               },
               nino: {
-                _question: "Tell us your national insurance number"
+                _question: "What is your national insurance number ?"
               }
 
+            },
+            about_your_partner: {
+              _page: "about_your_partner",
+              _nav_name: "About Your Partner",
+              name: {
+                _question: "What is your partners full name ?",
+              },
+              dob: {
+                _question: "What is their date of birth ?"
+              },
+              nino: {
+                _question: "Your partner's national insurance number"
+              },
+              nationality: {
+                _question: "Your partner's nationality"
+              },
+              employment_status: {
+                _question: "What is your partner's employment status ?"
+              },
+              member_of_hmforces_civilservant: {
+                _question: "Is your partner a member of HM forces or a civil servant working abroad ?"
+              }
+            },
+            children: {
+              _page: "children",
+              _nav_name: "Children",
+              how_many_birth_certs: {
+                _question: "How many birth certificates are you sending us?"
+              },
+              #{child_yaml}
+            },
+            declaration: {
+              _page: "declaration",
+              _nav_name: "Declaration",
             }
 
           }
         EOS
 
+      end
+
+      def child_yaml 
+        <<-EOS
+              child__1: {
+                name: {
+                  _question: "Child's name",
+                  _answer: {}
+                },
+                gender: {
+                  _question: "Is this child male or female ?"
+                },
+                dob: {
+                  _question: "Child's date of birth"
+                },
+                own_child: {
+                  _question: "Is this child your own child ?"
+                }
+             }
+          EOS
       end
 
       save_yaml do |yaml|
@@ -90,7 +144,8 @@ class ChildbenController < ApplicationController
         end
       end
 
-      # On answer call backs
+
+      # PREAMBLE callbacks
 
       on_answer "/page/preamble/income_more_than_50000"  do |question,path, params, answer|
         answer_with( question, { "_summary" => answer } )
@@ -101,9 +156,32 @@ class ChildbenController < ApplicationController
         answer_with( question, { "_summary" => "Yes" } )
       end
 
+
+
+      # ABOUT YOU callbacks
+
+      def validate answer,fields=nil
+        res = {}
+
+        if fields == nil
+            res["answer_error".to_sym] = "Can not be empty" if answer.squish.empty?
+            return res
+        end
+
+        fields.each do |f|
+          res["#{f}_error".to_sym] = "Can not be empty" if answer[f].squish.empty?
+        end
+        res
+      end
+      
+
       on_answer "/page/about_you/your_name"  do |question,path, params, answer|
+        res = validate( answer, ["title", "firstname", "surname"] )
+        next res if !res.empty?
+
         name = "#{answer['title']} #{answer['firstname']} #{answer['middlenames']} #{answer['surname']}".squish
-        answer_with( question, { "_summary" => name } )
+        formatted_name = name.split( " ").map{ |n| n.capitalize }.join( " ")
+        answer_with( question, { "_summary" => formatted_name } )
       end
 
       on_answer "/page/about_you/known_by_other_name"  do |question,path, params, answer|
@@ -112,16 +190,21 @@ class ChildbenController < ApplicationController
       end
 
       on_answer "/page/about_you/previous_name"  do |question,path, params, answer|
+        res = validate( answer )
+        next res if !res.empty?
         answer_with( question, { "_summary" => answer } )
       end
 
       on_answer "/page/about_you/dob"  do |question,path, params, answer|
         d = format_date answer
-        next { :dob_error => "Date of birth must be formated as DD/MM/YYYY" } if d.nil?
+        next { :answer_error => "Date of birth must be formated as dd/mm/yyyy" } if d.nil?
         answer_with( question, { "_summary" => d } )
       end
 
       on_answer "/page/about_you/your_address"  do |question,path, params, answer|
+        res = validate( answer, ["address1", "address2", "address3", "postcode"] )
+        next res if !res.empty?
+
         a = "#{answer['address1']}, #{answer['postcode']}"
         answer_with( question, { "_summary" => a } )
       end
@@ -132,11 +215,16 @@ class ChildbenController < ApplicationController
       end
 
       on_answer "/page/about_you/last_address"  do |question,path, params, answer|
+        res = validate( answer, ["address1", "address2", "address3", "postcode"] )
+        next res if !res.empty?
+
         a = "#{answer['address1']}, #{answer['postcode']}"
         answer_with( question, { "_summary" => a } )
       end
 
       on_answer "/page/about_you/your_phone_numbers"  do |question,path, params, answer|
+        res = validate( answer, ["daytime", "evening"] )
+        next res if !res.empty?
         answer_with( question, { "_summary" => "Provided" } )
       end
 
@@ -146,9 +234,78 @@ class ChildbenController < ApplicationController
       end
 
       on_answer "/page/about_you/nino" do |question, path, params, answer|
+        res = validate( answer )
+        next res if !res.empty?
         answer_with( question, { "_summary" => answer } )
       end
 
+
+
+      # ABOUT YOUR PARTNER callbacks
+      
+      on_answer "/page/about_your_partner/name"  do |question,path, params, answer|
+        answer_with( question, { "_summary" => answer } )
+      end
+
+      on_answer "/page/about_your_partner/dob"  do |question,path, params, answer|
+        answer_with( question, { "_summary" => answer } )
+      end
+
+      on_answer "/page/about_your_partner/nino"  do |question,path, params, answer|
+        answer_with( question, { "_summary" => answer } )
+      end
+
+      on_answer "/page/about_your_partner/nationality"  do |question,path, params, answer|
+        answer_with( question, { "_summary" => answer } )
+      end
+
+      on_answer "/page/about_your_partner/employment_status"  do |question,path, params, answer|
+        answer_with( question, { "_summary" => answer } )
+      end
+
+      on_answer "/page/about_your_partner/member_of_hmforces_civilservant"  do |question,path, params, answer|
+        answer_with( question, { "_summary" => answer } )
+      end
+
+      on_answer "/page/children/how_many_birth_certs"  do |question,path, params, answer|
+        answer_with( question, { "_summary" => answer } )
+      end
+
+      on_answer "/page/children/child__(\\d+)/name"  do |question,path, params, answer|
+        name = "#{answer['title']} #{answer['firstname']} #{answer['middlenames']} #{answer['surname']}".squish
+        answer_with( question, { "_summary" => name } )
+      end
+
+      on_answer "/page/children/child__(\\d+)/gender"  do |question,path, params, answer|
+        answer_with( question, { "_summary" => answer } )
+      end
+
+      on_answer "/page/children/child__(\\d+)/dob"  do |question,path, params, answer|
+        answer_with( question, { "_summary" => answer } )
+      end
+
+      on_answer "/page/children/child__(\\d+)/own_child"  do |question,path, params, answer|
+        answer_with( question, { "_summary" => answer } )
+      end
+
+      on_answer "/page/children/child__(\\d+)"  do |question,path, params, answer|
+        if params.include?("remove_child")
+          remove path
+          renumber "/page/children"
+          next
+        end
+        name = doop["#{path}/name/_answer"]
+        answer_with( question, { "_summary" => doop["#{path}/name/_summary"] } )
+      end
+
+      on_answer "/page/children" do |question, path, params, answer|
+        if params.include?("add_child")
+          add( "/page/children/child__99", YAML.load( child_yaml )["child__1"] )
+          renumber( "/page/children" )
+          next
+        end
+        answer_with( question, { "_summary" => "Provided" } )
+      end
     end
   end
 

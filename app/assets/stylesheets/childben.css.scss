@@ -48,6 +48,10 @@ $question-fg-color: #014c73;
     margin: 0.75em 0.75em 0.75em 0.75em;
   }
 
+  li {
+    margin: 0.75em 0.75em 0.75em 0.75em;
+  }
+
   .info_img {
     float: right;
     margin: 10px 10px 10px 10px;
@@ -75,13 +79,11 @@ $question-fg-color: #014c73;
   .title {
      padding: 0 0 0 0;
      display: table-cell;
-     width: 80%;
      vertical-align: middle;
   }
 
   .answer {
     display: table-cell;
-    max-width: 20%;
     text-align: right;
     vertical-align: middle;
     .button {
@@ -144,14 +146,13 @@ button {
 }
 
 .error {
-  span {
     color: red;
     border: 1px solid #B01117;
     background-color: #FFF3CF;
-    padding: 5px 5px 5px 5px;
+    padding: 2px 5px 2px 5px;
     border-radius: 5px;
     margin: 10px 0 10px 0;
-  }
+    width: auto;
 }
 
 .navbar {
@@ -233,6 +234,18 @@ button {
 
 }
 
+.summary_box {
+  display: block;
+  margin: 15px 0 15px 0;
+  max-width: 100%;
+  min-height: 60px;
+  border: solid #d1e4f2 5px;
+  box-shadow: 0 0 7px #ccc;
+  padding: 0.75em 0.75em 0.75em 0.75em;
+  background: #e1effa;
+  border-radius: 0.15em;
+}
+
 .change_answer_tooltip {
   border: 1px solid #F8C830;
   background-color: #FFF4B5;
@@ -270,6 +283,9 @@ button {
 
 }
 
+select {
+    @include core-16();
+}
 
 #watermark {
   position: fixed;
