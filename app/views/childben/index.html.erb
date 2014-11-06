@@ -1,7 +1,9 @@
 <div id="question_section">
   <%= render res[:page], :doop => doop, :res => res %>
-  <div style="display: none;">
-  <%= render "debug", :doop => doop, :res => res %>
+</div>
+<div style="display: none;">
+  <div id="doop_debug" title="Doop debug">
+    <%= render "debug", :doop => doop, :res => res %>
   </div>
 </div>
 
