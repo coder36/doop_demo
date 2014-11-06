@@ -1,8 +1,4 @@
 Rails.application.routes.draw do
-  get 'childben/harness'
-  post 'childben/answer'
-  post 'childben/index'
-  get 'childben/index'
   post 'demo/answer'
   get 'demo/index'
   post 'demo/index'
