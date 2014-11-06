@@ -1,3 +1,4 @@
+# encoding: utf-8
 
 require 'doop'
 require 'yaml'
@@ -32,7 +33,7 @@ class ChildbenController < ApplicationController
               _nav_name: "Preamble",
 
               income_more_than_50000: {
-                _question: "Does you or your partner have an individual income of more than 50,000 a year ?"
+                _question: "Does you or your partner have an individual income of more than £50,000 a year ?"
               },
               do_you_still_want_to_apply: {
                 _question: "Do you still want to apply for child benefit?"

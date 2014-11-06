@@ -86,7 +86,7 @@ $question-fg-color: #014c73;
     display: table-cell;
     text-align: right;
     vertical-align: middle;
-    .button {
+    .button-change-answer {
       @include button($question-fg-color);
       margin: 0 0 0 0;
     }
@@ -285,21 +285,5 @@ button {
 
 select {
     @include core-16();
-}
-
-#watermark {
-  position: fixed;
-  left: 0px;
-  top: 50px;
-  p {
-    padding: 0;
-    margin: 0;
-    color: lightgray;
-    font-size: 30px;
-    transform:rotate(300deg);
-    -webkit-transform:rotate(300deg);
-    opacity: 0.3;
-  }
-
 }
 

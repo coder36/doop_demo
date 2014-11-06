@@ -39,6 +39,7 @@ gem 'spring',        group: :development
 
 gem "govuk_frontend_toolkit"
 gem "govuk_template"
+gem "jquery-ui-rails"
 
 group :production do
   gem 'rails_12factor'

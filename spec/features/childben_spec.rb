@@ -22,17 +22,17 @@ feature "Child Benefit online form" do
     wait_for_page( "preamble" )
 
     # check income_more_than_50000 alternate flows
-    answer_question( "income_more_than_50000")  { click_button "No" }
+    answer_question( "income_more_than_50000")  { click_button "No," }
     expect( question "do_you_still_want_to_apply" ).to be_disabled
 
     change_question( "income_more_than_50000") do
       expect( change_answer_tooltip ).to be_visible
-      click_button "Yes" 
+      click_button "Yes," 
     end
 
     expect( question "do_you_still_want_to_apply" ).to be_enabled
 
-    answer_question( "do_you_still_want_to_apply")  { click_button "Yes" }
+    answer_question( "do_you_still_want_to_apply")  { click_button "Yes," }
     click_button "Continue" 
   end
 
@@ -44,9 +44,9 @@ feature "Child Benefit online form" do
       click_button "Continue" 
       expect( rollup_text ).to eq( "Mr Mark Alan Middleton" )
     end
-    answer_question( "known_by_other_name" ) { click_button "No" }
+    answer_question( "known_by_other_name" ) { click_button "No," }
     expect( question "previous_name" ).to be_disabled
-    change_question( "known_by_other_name" ) { click_button "Yes" }
+    change_question( "known_by_other_name" ) { click_button "Yes," }
     expect( question "previous_name" ).to be_enabled
 
     answer_question( "previous_name" ) { b_fill_in( "answer" => "Bob Smith"); click_button "Continue" }
@@ -63,9 +63,9 @@ feature "Child Benefit online form" do
       expect( rollup_text ).to eq( "1 Runswick Avenue, LE31 4WP" )
     end
 
-    answer_question( "lived_at_address_for_more_than_12_months" ) { click_button "Yes" }
+    answer_question( "lived_at_address_for_more_than_12_months" ) { click_button "Yes," }
     expect( question "last_address" ).to be_disabled
-    change_question( "lived_at_address_for_more_than_12_months" ) { click_button "No" }
+    change_question( "lived_at_address_for_more_than_12_months" ) { click_button "No," }
     expect( question "last_address" ).to be_enabled
 
     answer_question( "last_address" ) do
@@ -80,10 +80,10 @@ feature "Child Benefit online form" do
       expect( rollup_text ).to eq( "Provided" )
     end
 
-    answer_question( "have_nino" ) { click_button "No" }
+    answer_question( "have_nino" ) { click_button "No," }
     expect( question "nino" ).to be_disabled
 
-    change_question( "have_nino" ) { click_button "Yes" }
+    change_question( "have_nino" ) { click_button "Yes," }
     expect( question "nino" ).to be_enabled
 
     answer_question( "nino" ) do
@@ -109,7 +109,7 @@ feature "Child Benefit online form" do
     end
     answer_question( "gender" ) { click_button "Male" }
     answer_question( "dob" ) { b_fill_in( "answer" => "30/09/2006" ); click_button "Continue" }
-    answer_question( "own_child" ) { click_button "Yes" }
+    answer_question( "own_child" ) { click_button "Yes," }
     answer_question( "child__1" ) { click_button "Continue" }
 
     # child__2
@@ -120,7 +120,7 @@ feature "Child Benefit online form" do
     end
     answer_question( "gender" ) { click_button "Female" }
     answer_question( "dob" ) { b_fill_in( "answer" => "24/02/2008" ); click_button "Continue" }
-    answer_question( "own_child" ) { click_button "Yes" }
+    answer_question( "own_child" ) { click_button "Yes," }
     answer_question( "child__2" ) { click_button "Continue" }
 
     # remove child__2
