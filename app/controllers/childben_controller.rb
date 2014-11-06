@@ -23,9 +23,13 @@ class ChildbenController < ApplicationController
 
         <<-EOS
           page: {
+            before_you_begin: {
+              _page: "before_you_begin",
+              _nav_name: "Before you begin",
+            },
             preamble: {
               _page: "preamble",
-              _nav_name: "Before you begin",
+              _nav_name: "Preamble",
 
               income_more_than_50000: {
                 _question: "Does you or your partner have an individual income of more than 50,000 a year ?"
@@ -73,28 +77,6 @@ class ChildbenController < ApplicationController
                 _question: "What is your national insurance number ?"
               }
 
-            },
-            about_your_partner: {
-              _page: "about_your_partner",
-              _nav_name: "About Your Partner",
-              name: {
-                _question: "What is your partners full name ?",
-              },
-              dob: {
-                _question: "What is their date of birth ?"
-              },
-              nino: {
-                _question: "Your partner's national insurance number"
-              },
-              nationality: {
-                _question: "Your partner's nationality"
-              },
-              employment_status: {
-                _question: "What is your partner's employment status ?"
-              },
-              member_of_hmforces_civilservant: {
-                _question: "Is your partner a member of HM forces or a civil servant working abroad ?"
-              }
             },
             children: {
               _page: "children",
@@ -160,21 +142,6 @@ class ChildbenController < ApplicationController
 
       # ABOUT YOU callbacks
 
-      def validate answer,fields=nil
-        res = {}
-
-        if fields == nil
-            res["answer_error".to_sym] = "Can not be empty" if answer.squish.empty?
-            return res
-        end
-
-        fields.each do |f|
-          res["#{f}_error".to_sym] = "Can not be empty" if answer[f].squish.empty?
-        end
-        res
-      end
-      
-
       on_answer "/page/about_you/your_name"  do |question,path, params, answer|
         res = validate( answer, ["title", "firstname", "surname"] )
         next res if !res.empty?
@@ -239,41 +206,22 @@ class ChildbenController < ApplicationController
         answer_with( question, { "_summary" => answer } )
       end
 
-
-
-      # ABOUT YOUR PARTNER callbacks
-      
-      on_answer "/page/about_your_partner/name"  do |question,path, params, answer|
-        answer_with( question, { "_summary" => answer } )
-      end
-
-      on_answer "/page/about_your_partner/dob"  do |question,path, params, answer|
-        answer_with( question, { "_summary" => answer } )
-      end
-
-      on_answer "/page/about_your_partner/nino"  do |question,path, params, answer|
-        answer_with( question, { "_summary" => answer } )
-      end
-
-      on_answer "/page/about_your_partner/nationality"  do |question,path, params, answer|
-        answer_with( question, { "_summary" => answer } )
-      end
-
-      on_answer "/page/about_your_partner/employment_status"  do |question,path, params, answer|
-        answer_with( question, { "_summary" => answer } )
-      end
-
-      on_answer "/page/about_your_partner/member_of_hmforces_civilservant"  do |question,path, params, answer|
-        answer_with( question, { "_summary" => answer } )
-      end
-
       on_answer "/page/children/how_many_birth_certs"  do |question,path, params, answer|
+        res = validate( answer )
+        next res if !res.empty?
+        next { :answer_error => "Must be a number" } if !is_number answer
+
+
         answer_with( question, { "_summary" => answer } )
       end
 
       on_answer "/page/children/child__(\\d+)/name"  do |question,path, params, answer|
-        name = "#{answer['title']} #{answer['firstname']} #{answer['middlenames']} #{answer['surname']}".squish
-        answer_with( question, { "_summary" => name } )
+        res = validate( answer, ["firstname", "surname"] )
+        next res if !res.empty?
+
+        name = "#{answer['firstname']} #{answer['middlenames']} #{answer['surname']}".squish
+        formatted_name = name.split( " ").map{ |n| n.capitalize }.join( " ")
+        answer_with( question, { "_summary" => formatted_name } )
       end
 
       on_answer "/page/children/child__(\\d+)/gender"  do |question,path, params, answer|
@@ -281,7 +229,9 @@ class ChildbenController < ApplicationController
       end
 
       on_answer "/page/children/child__(\\d+)/dob"  do |question,path, params, answer|
-        answer_with( question, { "_summary" => answer } )
+        d = format_date answer
+        next { :answer_error => "Date of birth must be formated as dd/mm/yyyy" } if d.nil?
+        answer_with( question, { "_summary" => d } )
       end
 
       on_answer "/page/children/child__(\\d+)/own_child"  do |question,path, params, answer|
@@ -306,6 +256,7 @@ class ChildbenController < ApplicationController
         end
         answer_with( question, { "_summary" => "Provided" } )
       end
+
     end
   end
 
@@ -319,4 +270,22 @@ def format_date d
   rescue
     nil
   end
+end
+
+def validate answer,fields=nil
+  res = {}
+
+  if fields == nil
+      res["answer_error".to_sym] = "Can not be empty" if answer.squish.empty?
+      return res
+  end
+
+  fields.each do |f|
+    res["#{f}_error".to_sym] = "Can not be empty" if answer[f].squish.empty?
+  end
+  res
+end
+
+def is_number num
+  num =~ /\A[-+]?[0-9]*\.?[0-9]+\Z/
 end

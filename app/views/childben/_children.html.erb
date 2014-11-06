@@ -1,7 +1,7 @@
 <%=question_form doop, res do %>
 
   <%=question "/page/children" do |root,answer| %>
-    <p>Please list the children you want to claim for.</p>
+    <p><strong>List the children you want to claim for.</strong></p>
     <%=info_box do %>
       <p>For each child in this claim we need to see their:</p>
       <li>birth certificate (full or short version)</li>
@@ -14,31 +14,19 @@
     <p>You don't need to tell us about any children you already get Child Benefit for.</p>
 
     <%=question "/page/children/how_many_birth_certs" do |root,answer| %>
-      <p><strong>We do not accept photocopies of birth certificates.</strong>
-      We don't need to see a birth certificate for a child that has been claimed for by you or someone else in the past</p>
-      <div class="textfield">
-        <input id="certs" name="b_answer" type="text" value="<%=answer%>"/>
-      </div>
+      <p>We don't need to see a birth certificate for a child that has been claimed for by you or someone else in the past</p>
+      <%=doop_textfield "answer", answer, res %>
       <button>Continue</button>
     <% end %>
 
     <% list "/page/children/child__(\\d+)" do |path,index| %>
 
       <%=question "#{path}", :title => "Child #{index}" do |root,answer| %>
-        <%=question "#{path}/name" do |root,answer| %>
-          <div class="textfield">
-            <label for="firstname">First name</label>
-            <input id="firstname" name="b_firstname" type="text" value="<%=answer["firstname"]%>"/>
-          </div>
-          <div class="textfield">
-            <label for="middlenames">Middle names</label>
-            <input id="middlenames" name="b_middlenames" type="text" value="<%=answer["middlenames"]%>"/>
-          </div>
-          <div class="textfield">
-            <label for="suraname">Surname of family name</label>
-            <input id="surname" name="b_surname" type="text" value="<%=answer["surname"]%>"/>
-          </div>
 
+        <%=question "#{path}/name" do |root,answer| %>
+          <%=doop_textfield "firstname", answer, res, :label => "Firstname" %>
+          <%=doop_textfield "middlenames", answer, res, :label => "Middlename(s)" %>
+          <%=doop_textfield "surname", answer, res, :label => "Surname or family name" %>
           <button>Continue</button>
         <% end %>
 
@@ -48,17 +36,14 @@
         <% end %>
 
         <%=question "#{path}/dob" do |root,answer| %>
-          <div class="textfield">
-            <label for="dob">DD/MM/YYYY</label>
-            <%=error res, :dob_error %>
-            <input id="dob" name="b_answer" type="text" value="<%=answer%>"/>
-          </div>
+          <p>Please provide this in the format dd/mm/yyyy eg. 25/02/1977</p>
+          <%=doop_textfield "answer", answer, res %>
           <button>Continue</button>
         <% end %>
 
         <%=question "#{path}/own_child" do |root,answer| %>
-          <button name="b_answer" value="Yes">Yes</button><br/>
-          <button name="b_answer" value="No">No</button>
+          <button name="b_answer" value="Yes">Yes, this is my own child</button><br/>
+          <button name="b_answer" value="No">No, this is someone elses child</button>
         <% end %>
 
         <% when_answered path do %>

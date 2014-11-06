@@ -6,14 +6,19 @@ feature "Child Benefit online form" do
 
   scenario "Complete Child Benefit form", :js => true do
     before_you_begin
+    preamble
     about_you
-    about_your_partner
     children
     declaration
   end
 
   def before_you_begin
     visit '/childben/index'
+    wait_for_page( "before_you_begin" )
+    click_button "Start"
+  end
+
+  def preamble
     wait_for_page( "preamble" )
 
     # check income_more_than_50000 alternate flows
@@ -82,22 +87,11 @@ feature "Child Benefit online form" do
     expect( question "nino" ).to be_enabled
 
     answer_question( "nino" ) do
-      b_fill_in( "answer" => "00 12 34 56 A" )
+      b_fill_in( "answer" => "00123456A" )
       click_button "Continue"
-      expect( rollup_text ).to eq( "00 12 34 56 A" )
+      expect( rollup_text ).to eq( "00123456A" )
     end
 
-    click_button "Continue"
-  end
-
-  def about_your_partner
-    wait_for_page( "about_your_partner" )
-    answer_question( "name" ) { b_fill_in( "answer" => "Ann-Marie Middleton" ); click_button "Continue" }
-    answer_question( "dob" ) { b_fill_in( "answer" => "30/09/1974" ); click_button "Continue" }
-    answer_question( "nino" ) { b_fill_in( "answer" => "00 11 22 33 44 A" ); click_button "Continue" }
-    answer_question( "nationality" ) { b_fill_in( "answer" => "British" ); click_button "Continue" }
-    answer_question( "employment_status" ) { click_button "Continue" }
-    answer_question( "member_of_hmforces_civilservant" ) { click_button "No" }
     click_button "Continue"
   end
 
