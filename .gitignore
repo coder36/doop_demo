@@ -15,5 +15,4 @@
 /log/*.log
 /tmp
 *.swp
-/public/capybara.html
-/public/capybara_screenshot.png
+/public/assets
