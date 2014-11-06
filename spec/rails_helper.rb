@@ -121,16 +121,20 @@ def rollup_text
   page.find_by_id( "#{@q_title}-change" ).text
 end
 
-def tooltip_text
-  page.find( '.tooltip' ).text
-end
+#def tooltip_text
+#  page.find( '.tooltip' ).text
+#end
 
-def change_answer_tooltip_text
-  page.find( '.change_answer_tooltip' ).text
-end
+#def change_answer_tooltip_text
+#  page.find( '.change_answer_tooltip' ).text
+#end
 
 def change_answer_tooltip_for q_id
   "#{q_id}-change-answer-tooltip"
+end
+
+def tooltip
+  "#{@q_title}-tooltip"
 end
 
 def change_answer_tooltip

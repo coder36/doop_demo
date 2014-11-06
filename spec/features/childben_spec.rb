@@ -22,7 +22,10 @@ feature "Child Benefit online form" do
     wait_for_page( "preamble" )
 
     # check income_more_than_50000 alternate flows
-    answer_question( "income_more_than_50000")  { click_button "No," }
+    answer_question( "income_more_than_50000")  do
+      click_button "No,"
+      expect( tooltip ).to be_visible
+    end
     expect( question "do_you_still_want_to_apply" ).to be_disabled
 
     change_question( "income_more_than_50000") do

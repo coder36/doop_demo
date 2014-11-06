@@ -26,6 +26,15 @@
       <button name="b_answer" value="No">No, myself and or my partner both have incomes less than £50,000 a year</button>
     <% end %>
 
+    <% when_question :last_answered => "/page/preamble/income_more_than_50000" do |answer, id| %>
+      <% if answer == "No" %>
+        <%=tooltip id do %>
+        <p>If either you or your parnter have an individual income of more than £50,000 a year, then the higher earner, will be liable for
+        income tax on any child benefit received.</p>
+        <% end %>
+      <% end %>
+    <% end %>
+
     <%=question "/page/preamble/do_you_still_want_to_apply" do |root,answer| %>
 
         <%=info_box do %>

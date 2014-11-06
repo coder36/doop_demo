@@ -258,6 +258,10 @@ class ChildbenController < ApplicationController
         answer_with( question, { "_summary" => "Provided" } )
       end
 
+      on_answer "/page/declaration" do |question, path, params, answer |
+        { :redirect => "https://github.com/coder36/doop" }
+      end
+
     end
   end
 
