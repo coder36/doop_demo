@@ -12,15 +12,7 @@ class DemoController < ApplicationController
   def setup_doop
     @doop_controller = Doop::DoopController.new self do |doop|
 
-      load_yaml do
-        data = params["doop_data"] 
-        if data != nil
-          if Rails.env.development? || Rails.env.test? || params.include?("harness")
-            next data
-          else
-            next ActiveSupport::MessageEncryptor.new(Rails.application.secrets.secret_key_base).decrypt_and_verify data if !Rails.env.development?
-          end
-        end
+      yaml do
 
         <<-EOS
           page: {
@@ -115,16 +107,6 @@ class DemoController < ApplicationController
                 }
              }
           EOS
-      end
-
-      save_yaml do |yaml|
-        if Rails.env.development? || Rails.env.test?
-          request["doop_data"] = yaml
-        else
-          crypt = ActiveSupport::MessageEncryptor.new(Rails.application.secrets.secret_key_base)
-          data = crypt.encrypt_and_sign(yaml)
-          request["doop_data"] = data
-        end
       end
 
 

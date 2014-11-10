@@ -1,8 +1,7 @@
-GIT
-  remote: git://github.com/coder36/doop.git
-  revision: be3091eff0132ebf52cf6a13d250aeb0c7a52f5a
+PATH
+  remote: ../doop
   specs:
-    doop (0.0.4.1)
+    doop (0.0.4.2)
       rails (~> 4.1)
 
 GEM
