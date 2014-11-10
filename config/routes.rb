@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   post 'demo/answer'
   get 'demo/index'
   post 'demo/index'
+  post 'demo/harness'
   get 'demo/harness'
   root 'demo#index'
   # The priority is based upon order of creation: first created -> highest priority.

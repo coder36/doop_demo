@@ -140,4 +140,5 @@ feature "Child Benefit online form" do
   def declaration
     wait_for_page( "declaration" )
   end
+
 end
