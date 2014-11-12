@@ -137,6 +137,12 @@ button {
 
 }
 
+.button {
+  @include button;
+  margin: 16px 0 0 0;
+
+}
+
 .button-secondary{
   @include button($grey-3);
 }
@@ -288,3 +294,36 @@ select {
     @include core-16();
 }
 
+.bar {
+  height: 18px;
+  background: green;
+}
+
+.uploaded_image {
+  float: left;
+  padding: 0 0 5px 0;
+  margin: 0 2px 0 0;
+  width: auto;
+  border: 1px solid #ccc;
+  img {
+    padding: 0 0 0 0;
+    margin: 8px 0 0 0;
+  }
+  button {
+
+    margin: 0 0 0 0;
+
+  }
+}
+
+.clear {
+  clear: both;
+}
+
+.progress-bar {
+  margin: 10px 0 0 0;
+  height: 20px;
+  width: 0;
+  background: url(progressbar.gif);
+  display: none;
+}

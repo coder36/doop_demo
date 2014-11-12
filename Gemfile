@@ -40,6 +40,8 @@ gem 'spring',        group: :development
 gem "govuk_frontend_toolkit"
 gem "govuk_template"
 gem "jquery-ui-rails"
+gem "blueimp-gallery"
+gem "jquery-fileupload-rails"
 
 group :production do
   gem 'rails_12factor'

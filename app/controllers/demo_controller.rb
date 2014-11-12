@@ -35,7 +35,12 @@ class DemoController < ApplicationController
               },
               do_you_still_want_to_apply: {
                 _question: "Do you still want to apply for child benefit?"
+              },
+              proof_of_id: {
+                _question: "We need proof of your identity",
+                _answer: {}
               }
+
             },
             about_you: {
               _page: "about_you",
@@ -80,9 +85,6 @@ class DemoController < ApplicationController
             children: {
               _page: "children",
               _nav_name: "Children",
-              how_many_birth_certs: {
-                _question: "How many birth certificates are you sending us?"
-              },
               #{child_yaml}
             },
             declaration: {
@@ -110,6 +112,10 @@ class DemoController < ApplicationController
                 },
                 own_child: {
                   _question: "Is this child your own child ?"
+                },
+                birth_certificate: {
+                  _question: "We need a photo of the birth certificate",
+                  _answer: {}
                 }
              }
           EOS
@@ -117,6 +123,7 @@ class DemoController < ApplicationController
 
 
       # PREAMBLE callbacks
+     
 
       on_answer "/page/preamble/income_more_than_50000"  do |question,path, params, answer|
         answer_with( question, { "_summary" => answer } )
@@ -127,6 +134,9 @@ class DemoController < ApplicationController
         answer_with( question, { "_summary" => "Yes" } )
       end
 
+      on_answer "/page/preamble/proof_of_id"  do |question,path, params, answer|
+        file_upload_control question, path, params, answer
+      end
 
 
       # ABOUT YOU callbacks
@@ -195,15 +205,6 @@ class DemoController < ApplicationController
         answer_with( question, { "_summary" => answer } )
       end
 
-      on_answer "/page/children/how_many_birth_certs"  do |question,path, params, answer|
-        res = validate( answer )
-        next res if !res.empty?
-        next { :answer_error => "Must be a number" } if !is_number answer
-
-
-        answer_with( question, { "_summary" => answer } )
-      end
-
       on_answer "/page/children/child__(\\d+)/name"  do |question,path, params, answer|
         res = validate( answer, ["firstname", "surname"] )
         next res if !res.empty?
@@ -227,6 +228,10 @@ class DemoController < ApplicationController
         answer_with( question, { "_summary" => answer } )
       end
 
+      on_answer "/page/children/child__(\\d+)/birth_certificate"  do |question,path, params, answer|
+        file_upload_control question, path, params, answer
+      end
+
       on_answer "/page/children/child__(\\d+)"  do |question,path, params, answer|
         if params.include?("remove_child")
           remove path
@@ -248,6 +253,37 @@ class DemoController < ApplicationController
 
       on_answer "/page/declaration" do |question, path, params, answer |
         { :redirect => "https://github.com/coder36/doop" }
+      end
+
+      def file_upload_control question, path, params, answer
+        a = answer.values
+
+        if params.include? "remove_file"
+          a.delete( answer[params["remove_file"]] )
+        end
+        if params.include? "files"
+          params["files"].each do |uploaded_io|
+            ext = uploaded_io.original_filename[/.*\.(\w+)/,1]
+            filename = (0...16).map { (65 + rand(26)).chr }.join + ".#{ext}"
+            filename.downcase!
+
+            File.open(Rails.root.join('public', 'uploads', filename), 'wb') do |file|
+              file.write(uploaded_io.read)
+            end
+            a << filename
+          end
+        end
+        file_count = 0
+        answer.clear
+        a.each do  |n|
+          file_count += 1
+          answer[ "file__#{file_count}" ] = n
+        end
+
+        if params.include? "continue"
+          summary = file_count==0 ? "None provided" : "#{file_count} image#{file_count>1 ? 's' : ''} provided"
+          answer_with( question, { "_summary" => summary } )
+        end
       end
 
     end

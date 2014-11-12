@@ -38,6 +38,8 @@ feature "Child Benefit online form" do
     expect( question "do_you_still_want_to_apply" ).to be_enabled
 
     answer_question( "do_you_still_want_to_apply")  { click_button "Yes," }
+
+    answer_question( "proof_of_id" ) { click_button "Continue" }
     click_button "Continue" 
   end
 
@@ -103,10 +105,6 @@ feature "Child Benefit online form" do
   def children
     wait_for_page( "children" )
 
-    answer_question( "how_many_birth_certs" ) do
-      b_fill_in( "answer" => "1" ); click_button "Continue" 
-    end
-
     # child__1
     answer_question( "name" ) do 
       b_fill_in( "firstname" => "Padraig", "middlenames" => "Alan", "surname" => "Middleton" ); click_button "Continue" 
@@ -115,6 +113,7 @@ feature "Child Benefit online form" do
     answer_question( "gender" ) { click_button "Male" }
     answer_question( "dob" ) { b_fill_in( "answer" => "30/09/2006" ); click_button "Continue" }
     answer_question( "own_child" ) { click_button "Yes," }
+    answer_question( "birth_certificate" ) { click_button "Continue" }
     answer_question( "child__1" ) { click_button "Continue" }
 
     # child__2
@@ -126,6 +125,7 @@ feature "Child Benefit online form" do
     answer_question( "gender" ) { click_button "Female" }
     answer_question( "dob" ) { b_fill_in( "answer" => "24/02/2008" ); click_button "Continue" }
     answer_question( "own_child" ) { click_button "Yes," }
+    answer_question( "birth_certificate" ) { click_button "Continue" }
     answer_question( "child__2" ) { click_button "Continue" }
 
     # remove child__2

@@ -14,6 +14,7 @@
       <h3>Your information</h3>
     <p>By applying for child benefit online, you consent that we may process your personal data (including sensitive personal data) that we collect from you.</p>
 
+
     <% when_question :changed => "/page/preamble/income_more_than_50000" do |current_answer, id| %>
       <%=change_answer_tooltip id do %>
         <p>If you change this answer, additional questions may be asked</p>
@@ -46,6 +47,15 @@
         <% end %>
 
       <button name="b_answer" value="Yes">Yes, I still want to apply for child benefit</button><br/>
+    <% end %>
+
+    <%=question "/page/preamble/proof_of_id" do |root,answer| %>
+      <%=info_box do %>
+        <p>Please upload a photo, of either your passport, driving license and a utility bill 
+        with your name and address visible.</p>
+        <p>If you are applying using a mobile device with a camera, when you click the upload button, your camera will be activated.</p>
+      <% end %>
+      <%=file_uploader answer%>
     <% end %>
 
     <% when_answered "/page/preamble" do %>

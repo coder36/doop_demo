@@ -13,12 +13,6 @@
     <% end %>
     <p>You don't need to tell us about any children you already get Child Benefit for.</p>
 
-    <%=question "/page/children/how_many_birth_certs" do |root,answer| %>
-      <p>We don't need to see a birth certificate for a child that has been claimed for by you or someone else in the past</p>
-      <%=doop_textfield "answer", answer, res %>
-      <button>Continue</button>
-    <% end %>
-
     <% list "/page/children/child__(\\d+)" do |path,index| %>
 
       <%=question "#{path}", :title => "Child #{index}" do |root,answer| %>
@@ -44,6 +38,14 @@
         <%=question "#{path}/own_child" do |root,answer| %>
           <button name="b_answer" value="Yes">Yes, this is my own child</button><br/>
           <button name="b_answer" value="No">No, this is someone elses child</button>
+        <% end %>
+
+        <%=question "#{path}/birth_certificate" do |root,answer| %>
+          <%=info_box do %>
+            <p>Please upload a photo, of the birth certificate or adoption papers.</p>
+            <p>If you are applying using a mobile device with a camera, when you click the upload button, your camera will be activated.</p>
+          <% end %>
+          <%=file_uploader answer%>
         <% end %>
 
         <% when_answered path do %>

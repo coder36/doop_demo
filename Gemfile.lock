@@ -35,6 +35,8 @@ GEM
       tzinfo (~> 1.1)
     addressable (2.3.6)
     arel (5.0.1.20140414130214)
+    blueimp-gallery (2.11.0.1)
+      railties (>= 3.1.0)
     builder (3.2.2)
     capybara (2.4.4)
       mime-types (>= 1.16)
@@ -86,6 +88,9 @@ GEM
     jbuilder (2.2.2)
       activesupport (>= 3.0.0, < 5)
       multi_json (~> 1.2)
+    jquery-fileupload-rails (0.4.1)
+      actionpack (>= 3.1)
+      railties (>= 3.1)
     jquery-rails (3.1.2)
       railties (>= 3.0, < 5.0)
       thor (>= 0.14, < 2.0)
@@ -204,6 +209,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  blueimp-gallery
   capybara
   capybara-screenshot
   capybara-webkit
@@ -214,6 +220,7 @@ DEPENDENCIES
   guard-rspec
   headless
   jbuilder (~> 2.0)
+  jquery-fileupload-rails
   jquery-rails
   jquery-ui-rails
   pg
